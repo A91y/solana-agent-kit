@@ -98,6 +98,7 @@ import {
   withdrawFromDriftVault,
   updateVaultDelegate,
   get_token_balance,
+  create_xcombinator_agent,
 } from "../tools";
 import {
   Config,
@@ -820,5 +821,29 @@ export class SolanaAgentKit {
   }
   async updateDriftVaultDelegate(vaultAddress: string, delegate: string) {
     return await updateVaultDelegate(this, vaultAddress, delegate);
+  }
+
+  async createXCombinatorAgent(
+    tokenName: string,
+    tokenSymbol: string,
+    metadataUri: string,
+    merkleRoot: number[] | null,
+    startTime: number,
+    firstBuyAmount: number,
+    creatorBuyAmount: number,
+    maxBuyAmount: number,
+  ): Promise<{ txId: string; launchId: string }> {
+    const result = await create_xcombinator_agent(
+      this,
+      tokenName,
+      tokenSymbol,
+      metadataUri,
+      merkleRoot,
+      startTime,
+      firstBuyAmount,
+      creatorBuyAmount,
+      maxBuyAmount,
+    );
+    return { txId: result.txId, launchId: result.launchId.toString() };
   }
 }

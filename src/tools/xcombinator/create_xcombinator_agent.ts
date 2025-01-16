@@ -38,7 +38,7 @@ export async function create_xcombinator_agent(
 
   createTxn.sign(agent.wallet);
 
-  const txId = agent.connection.sendRawTransaction(createTxn.serialize());
+  const txId = await agent.connection.sendRawTransaction(createTxn.serialize());
 
   return {
     txId,
