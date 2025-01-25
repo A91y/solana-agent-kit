@@ -8,12 +8,30 @@ export class SolanaCreateXCombinatorAgent extends Tool {
   Inputs (JSON string):
   - tokenName: string, the name of the token (required).
   - tokenSymbol: string, the symbol of the token (required).
-  - metadataUri: string, the URI of the metadata for the token (required).
-  - merkleRoot: number[] | null, the merkle root of the token metadata (optional).
-  - startTime: number, the start time of the token sale (required).
-  - firstBuyAmount: number, the amount of the first buy (required).
-  - creatorBuyAmount: number, the amount of the creator buy (required).
-  - maxBuyAmount: number, the maximum buy amount (required).`;
+  - imageUrl: string, the URL of the image for the token (required).
+  - startTime: number, the start time of the token sale (optional).
+  - firstBuyAmount: number, the amount of the first buy (optional).
+  - creatorBuyAmount: number, the amount of the creator buy (optional).
+  - maxBuyAmount: number, the maximum buy amount (optional).
+
+  Example with required parameters:
+  {
+    "tokenName": "MyToken",
+    "tokenSymbol": "MTK",
+    "imageUrl": "https://example.com/image.png"
+  }
+
+  Example with all parameters:
+  {
+    "tokenName": "MyToken",
+    "tokenSymbol": "MTK",
+    "imageUrl": "https://example.com/image.png",
+    "startTime": 1633024800,
+    "firstBuyAmount": 100,
+    "creatorBuyAmount": 50,
+    "maxBuyAmount": 1000,
+    "vestingDuration": 3600
+  }`;
 
   constructor(private solanaKit: SolanaAgentKit) {
     super();
@@ -24,22 +42,24 @@ export class SolanaCreateXCombinatorAgent extends Tool {
       const inputFormat = JSON.parse(input);
       const tokenName = inputFormat.tokenName;
       const tokenSymbol = inputFormat.tokenSymbol;
-      const metadataUri = inputFormat.metadataUri;
-      const merkleRoot = inputFormat.merkleRoot;
+      const imageUrl = inputFormat.imageUrl;
+      const merkleRoot = null;
       const startTime = inputFormat.startTime;
       const firstBuyAmount = inputFormat.firstBuyAmount;
       const creatorBuyAmount = inputFormat.creatorBuyAmount;
       const maxBuyAmount = inputFormat.maxBuyAmount;
+      const vestingDuration = inputFormat.vestingDuration;
 
       const { txId, launchId } = await this.solanaKit.createXCombinatorAgent(
         tokenName,
         tokenSymbol,
-        metadataUri,
+        imageUrl,
         merkleRoot,
         startTime,
         firstBuyAmount,
         creatorBuyAmount,
         maxBuyAmount,
+        vestingDuration,
       );
 
       return JSON.stringify({

@@ -539,8 +539,33 @@ export type PumpLaunchpad = {
           isSigner: true;
         },
         {
+          name: "payAssociatedUser";
+          isMut: true;
+          isSigner: false;
+        },
+        {
+          name: "creator";
+          isMut: true;
+          isSigner: false;
+        },
+        {
           name: "launch";
           isMut: true;
+          isSigner: false;
+        },
+        {
+          name: "payAssociatedLaunch";
+          isMut: true;
+          isSigner: false;
+        },
+        {
+          name: "payTokenMint";
+          isMut: true;
+          isSigner: false;
+        },
+        {
+          name: "associatedTokenProgram";
+          isMut: false;
           isSigner: false;
         },
         {
@@ -684,6 +709,10 @@ export type PumpLaunchpad = {
             name: "bump";
             type: "u8";
           },
+          {
+            name: "claimedAmount";
+            type: "u64";
+          },
         ];
       };
     },
@@ -816,6 +845,14 @@ export type PumpLaunchpad = {
             name: "maxBuyAmount";
             type: "u64";
           },
+          {
+            name: "vestingDuration";
+            type: "i64";
+          },
+          {
+            name: "migratedAt";
+            type: "i64";
+          },
         ];
       };
     },
@@ -901,6 +938,10 @@ export type PumpLaunchpad = {
           {
             name: "maxBuyAmount";
             type: "u64";
+          },
+          {
+            name: "vestingDuration";
+            type: "i64";
           },
         ];
       };
@@ -1732,8 +1773,33 @@ export const IDL: PumpLaunchpad = {
           isSigner: true,
         },
         {
+          name: "payAssociatedUser",
+          isMut: true,
+          isSigner: false,
+        },
+        {
+          name: "creator",
+          isMut: true,
+          isSigner: false,
+        },
+        {
           name: "launch",
           isMut: true,
+          isSigner: false,
+        },
+        {
+          name: "payAssociatedLaunch",
+          isMut: true,
+          isSigner: false,
+        },
+        {
+          name: "payTokenMint",
+          isMut: true,
+          isSigner: false,
+        },
+        {
+          name: "associatedTokenProgram",
+          isMut: false,
           isSigner: false,
         },
         {
@@ -1877,6 +1943,10 @@ export const IDL: PumpLaunchpad = {
             name: "bump",
             type: "u8",
           },
+          {
+            name: "claimedAmount",
+            type: "u64",
+          },
         ],
       },
     },
@@ -2009,6 +2079,14 @@ export const IDL: PumpLaunchpad = {
             name: "maxBuyAmount",
             type: "u64",
           },
+          {
+            name: "vestingDuration",
+            type: "i64",
+          },
+          {
+            name: "migratedAt",
+            type: "i64",
+          },
         ],
       },
     },
@@ -2094,6 +2172,10 @@ export const IDL: PumpLaunchpad = {
           {
             name: "maxBuyAmount",
             type: "u64",
+          },
+          {
+            name: "vestingDuration",
+            type: "i64",
           },
         ],
       },

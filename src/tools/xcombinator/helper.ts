@@ -164,7 +164,7 @@ const buyIx = async (agent: SolanaAgentKit, user: PublicKey, args: BuyArgs) => {
   return ixs;
 };
 
-type CreateArgs = {
+export type CreateArgs = {
   name: string;
   symbol: string;
   uri: string;
@@ -173,6 +173,7 @@ type CreateArgs = {
   firstBuyAmount: BN;
   creatorBuyAmount: BN;
   maxBuyAmount: BN;
+  vestingDuration: BN;
 };
 
 const getProgram = (agent: SolanaAgentKit) => {

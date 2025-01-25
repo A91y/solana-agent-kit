@@ -1050,23 +1050,25 @@ export class SolanaAgentKit {
   async createXCombinatorAgent(
     tokenName: string,
     tokenSymbol: string,
-    metadataUri: string,
+    imageUrl: string,
     merkleRoot: number[] | null,
     startTime: number,
     firstBuyAmount: number,
     creatorBuyAmount: number,
     maxBuyAmount: number,
+    vestingDuration: number,
   ): Promise<{ txId: string; launchId: string }> {
     const result = await create_xcombinator_agent(
       this,
       tokenName,
       tokenSymbol,
-      metadataUri,
+      imageUrl,
       merkleRoot,
       startTime,
       firstBuyAmount,
       creatorBuyAmount,
       maxBuyAmount,
+      vestingDuration,
     );
     return { txId: result.txId, launchId: result.launchId.toString() };
   }
