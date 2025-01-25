@@ -1051,12 +1051,12 @@ export class SolanaAgentKit {
     tokenName: string,
     tokenSymbol: string,
     imageUrl: string,
-    merkleRoot: number[] | null,
-    startTime: number,
-    firstBuyAmount: number,
-    creatorBuyAmount: number,
-    maxBuyAmount: number,
-    vestingDuration: number,
+    merkleRoot: number[] | null = null,
+    startTime: number = Date.now(),
+    firstBuyAmount: number = 0,
+    creatorBuyAmount: number = 0,
+    maxBuyAmount: number = 0,
+    vestingDuration: number = 0,
   ): Promise<{ txId: string; launchId: string }> {
     const result = await create_xcombinator_agent(
       this,

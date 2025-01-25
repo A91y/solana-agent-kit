@@ -9,5 +9,5 @@ export const MINT_SEED = "mint";
 export const METADATA_SEED = "metadata";
 export const GLOBAL_SEED = "global";
 export const FEE_RECIPIENT = new PublicKey(
-  "3UX5uwsiFFEu7R2Sx6iLQxvs4yDm9MUNPWTYgcKGFE5u",
+  "HxW4EmTr2WhvrKuxXjB5t5hEpftNebxw6mXsVxcYDMHT",
 );

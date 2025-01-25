@@ -13,15 +13,19 @@ import {
   programId,
 } from "./constants";
 import {
+  ASSOCIATED_TOKEN_PROGRAM_ID,
   createAssociatedTokenAccountIdempotentInstruction,
   createAssociatedTokenAccountInstruction,
   createCloseAccountInstruction,
   createSyncNativeInstruction,
   getAssociatedTokenAddressSync,
   NATIVE_MINT,
+  TOKEN_PROGRAM_ID,
 } from "@solana/spl-token";
 import { FEE_RECIPIENT } from "./constants";
 import { SystemProgram } from "@solana/web3.js";
+import { TOKEN_METADATA_PROGRAM_ID } from "@onsol/tldparser";
+import { RENT_PROGRAM_ID } from "@raydium-io/raydium-sdk-v2";
 
 export async function createIx(
   agent: SolanaAgentKit,
@@ -40,6 +44,11 @@ export async function createIx(
 
   const payAssociatedUser = getAssociatedTokenAddressSync(NATIVE_MINT, user);
 
+  const associatedLaunch = getAssociatedTokenAddressSync(
+    tokenMint,
+    launch,
+    true,
+  );
   const payAssociatedLaunch = getAssociatedTokenAddressSync(
     NATIVE_MINT,
     launch,
@@ -57,9 +66,16 @@ export async function createIx(
       .create(args)
       .accounts({
         user,
+        global,
         launch,
         tokenMint,
         metadata,
+        associatedLaunch,
+        tokenMetadataProgram: TOKEN_METADATA_PROGRAM_ID,
+        associatedTokenProgram: ASSOCIATED_TOKEN_PROGRAM_ID,
+        tokenProgram: TOKEN_PROGRAM_ID,
+        systemProgram: SystemProgram.programId,
+        rent: RENT_PROGRAM_ID,
       })
       .instruction(),
   ];
@@ -82,9 +98,13 @@ export async function createIx(
         .fund(args)
         .accounts({
           user,
+          global,
           payAssociatedUser,
           launch,
           payAssociatedLaunch,
+          payTokenMint: NATIVE_MINT,
+          tokenProgram: TOKEN_PROGRAM_ID,
+          systemProgram: SystemProgram.programId,
         })
         .instruction(),
       createCloseAccountInstruction(payAssociatedUser, user, user),
@@ -124,6 +144,7 @@ const buyIx = async (agent: SolanaAgentKit, user: PublicKey, args: BuyArgs) => {
     launch,
     true,
   );
+  const global = getGlobalAddress();
 
   const ixs = [
     createAssociatedTokenAccountIdempotentInstruction(
@@ -153,9 +174,15 @@ const buyIx = async (agent: SolanaAgentKit, user: PublicKey, args: BuyArgs) => {
       .accounts({
         user,
         allocation,
+        global,
         payAssociatedUser,
         launch,
+        payTokenMint: NATIVE_MINT,
+        payAssociatedLaunch,
         feeRecipient: FEE_RECIPIENT,
+        associatedTokenProgram: ASSOCIATED_TOKEN_PROGRAM_ID,
+        tokenProgram: TOKEN_PROGRAM_ID,
+        systemProgram: SystemProgram.programId,
       })
       .instruction(),
     createCloseAccountInstruction(payAssociatedUser, user, user),

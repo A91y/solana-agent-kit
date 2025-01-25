@@ -21,8 +21,11 @@ export async function create_xcombinator_agent(
     tokenName,
     tokenSymbol,
     imageUrl,
-    `${tokenName} ${tokenSymbol} NFT`,
+    `${tokenName} - ${tokenSymbol}`,
   );
+  if (!metadataUri) {
+    throw new Error("Error uploading metadata to IPFS");
+  }
   const { ixs, launchId } = await createIx(agent, agent.wallet_address, {
     name: tokenName,
     symbol: tokenSymbol,
@@ -45,10 +48,17 @@ export async function create_xcombinator_agent(
   createTxn.add(...ixs);
   createTxn.feePayer = agent.wallet_address;
 
+  const recentBlockhash = await agent.connection.getLatestBlockhash();
+  createTxn.recentBlockhash = recentBlockhash.blockhash;
+
   createTxn.sign(agent.wallet);
-
-  const txId = await agent.connection.sendRawTransaction(createTxn.serialize());
-
+  let txId = "";
+  // try {
+  txId = await agent.connection.sendRawTransaction(createTxn.serialize());
+  // } catch (err) {
+  //   console.error("Transaction failed:", err);
+  //   if ((err as any).logs) console.error("Logs:", (err as any).logs);
+  // }
   return {
     txId,
     launchId,
